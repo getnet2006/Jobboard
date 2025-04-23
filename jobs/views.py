@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions
 from .models import Job
 from .serializers import JobSerializer
-from accounts.permissions import IsClient
+from accounts.permissions import IsClient, IsJobOwner
 
 
 class JobCreateListView(generics.ListCreateAPIView):
@@ -15,3 +15,9 @@ class JobCreateListView(generics.ListCreateAPIView):
     def get_queryset(self):
         # Clients only see their own jobs
         return Job.objects.filter(client=self.request.user)
+
+
+class JobDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer
+    permission_classes = [permissions.IsAuthenticated, IsClient, IsJobOwner]
