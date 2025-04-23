@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # third-party apps
     "rest_framework",
     "rest_framework_simplejwt",
+    "django_filters",
     # local apps
     "accounts.apps.AccountsConfig",
     "jobs.apps.JobsConfig",
@@ -110,7 +111,15 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_FILTER_BACKENDS": [
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
 }
+
 
 # settings for JWT
 SIMPLE_JWT = {
