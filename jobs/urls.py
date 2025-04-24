@@ -1,4 +1,6 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+
 from .views import (
     ApplyToJobView,
     JobApplicantsView,
@@ -6,6 +8,7 @@ from .views import (
     JobDetailView,
     PublicJobListView,
     AppliedJobsListView,
+    ApplicationViewSet,
 )
 
 urlpatterns = [

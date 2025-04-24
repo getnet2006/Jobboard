@@ -22,6 +22,8 @@ class Application(models.Model):
     freelancer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     cover_letter = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    hired_date = models.DateTimeField(null=True, blank=True)
+    is_hired = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("job", "freelancer")  # Prevent duplicate applications

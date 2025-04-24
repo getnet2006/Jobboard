@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework import filters
+from rest_framework.decorators import action
+from rest_framework import filters, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .filters import JobFilter
@@ -11,9 +12,11 @@ from .serializers import (
     ApplicationListSerializer,
     ApplicationSerializer,
     ApplicationWithFreelancerSerializer,
+    HiredSerializer,
     JobSerializer,
 )
 from accounts.permissions import IsClient, IsFreelancer, IsJobOwner
+from django.utils import timezone
 
 
 class JobCreateListView(generics.ListCreateAPIView):
@@ -42,7 +45,7 @@ class JobDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PublicJobListView(generics.ListAPIView):
-    queryset = Job.objects.filter(is_open=True)
+    queryset = Job.objects.filter(is_open=True, )
     serializer_class = JobSerializer
     filter_backends = [
         DjangoFilterBackend,
@@ -92,3 +95,55 @@ class JobApplicantsView(generics.ListAPIView):
         job_id = self.kwargs["job_id"]
         job = get_object_or_404(Job, id=job_id, client=self.request.user)
         return Application.objects.filter(job=job).select_related("freelancer")
+
+
+class ApplicationViewSet(viewsets.ModelViewSet):
+    queryset = Application.objects.all()
+    serializer_class = ApplicationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @action(
+        detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated, IsClient]
+    )
+    def hire(self, request, pk=None):
+        application = self.get_object()
+        job = application.job
+
+        # Make sure only the job's owner (client) can hire
+        if job.client != request.user:
+            return Response(
+                {"detail": "You do not own this job."}, status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Make sure job is still active
+        # if not job.is_active:
+        #     return Response(
+        #         {"detail": "This job is already closed."},
+        #         status=status.HTTP_400_BAD_REQUEST,
+        #     )
+
+        # Prevent hiring more than one freelancer
+        if Application.objects.filter(job=job, is_hired=True).exists():
+            return Response(
+                {"detail": "A freelancer is already hired for this job."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        application.is_hired = True
+        application.hired_date = timezone.now()
+        application.save()
+
+        # Optional: mark job as closed
+        job.is_open = False
+        job.save()
+
+        return Response({"message": "Freelancer hired successfully!"})
+
+    @action(detail=False, methods=["get"], permission_classes=[permissions.IsAuthenticated])
+    def hired(self, request):
+        hired_apps = Application.objects.filter(
+            is_hired=True, job__client=request.user
+        ).select_related("job", "freelancer")
+
+        serializer = HiredSerializer(hired_apps, many=True)
+        return Response(serializer.data)

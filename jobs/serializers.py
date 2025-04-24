@@ -79,3 +79,23 @@ class ApplicationWithFreelancerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = ["id", "freelancer", "cover_letter", "created_at"]
+
+
+class HiredSerializer(serializers.ModelSerializer):
+    job_title = serializers.CharField(source="job.title", read_only=True)
+    freelancer_name = serializers.CharField(
+        source="freelancer.username", read_only=True
+    )
+    hired_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M", read_only=True)
+
+    class Meta:
+        model = Application
+        fields = [
+            "id",
+            "job",
+            "job_title",
+            "freelancer",
+            "freelancer_name",
+            "created_at",
+            "hired_date",
+        ]
