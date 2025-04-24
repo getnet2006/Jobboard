@@ -10,6 +10,7 @@ class Job(models.Model):
     budget = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     is_open = models.BooleanField(default=True)
+    max_applications = models.PositiveIntegerField(default=10)
 
     def __str__(self):
         return self.title
@@ -27,4 +28,3 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.freelancer} applied to {self.job}"
-

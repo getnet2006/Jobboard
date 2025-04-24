@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -6,7 +7,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .filters import JobFilter
 from .models import Application, Job
-from .serializers import ApplicationListSerializer, ApplicationSerializer, JobSerializer
+from .serializers import (
+    ApplicationListSerializer,
+    ApplicationSerializer,
+    ApplicationWithFreelancerSerializer,
+    JobSerializer,
+)
 from accounts.permissions import IsClient, IsFreelancer, IsJobOwner
 
 
@@ -76,3 +82,13 @@ class ApplyToJobView(generics.CreateAPIView):
 
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class JobApplicantsView(generics.ListAPIView):
+    serializer_class = ApplicationWithFreelancerSerializer
+    permission_classes = [permissions.IsAuthenticated, IsClient]
+
+    def get_queryset(self):
+        job_id = self.kwargs["job_id"]
+        job = get_object_or_404(Job, id=job_id, client=self.request.user)
+        return Application.objects.filter(job=job).select_related("freelancer")
