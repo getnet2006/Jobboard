@@ -49,7 +49,7 @@ class PublicJobListView(generics.ListAPIView):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    filterset_class = JobFilter  # ← Use custom filter here
+    filterset_class = JobFilter  
     search_fields = ["title", "description"]
     ordering_fields = ["created_at", "budget"]
     permission_classes = [permissions.AllowAny]
