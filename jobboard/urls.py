@@ -18,10 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from jobs.views import ApplicationViewSet
+from jobs.views import ApplicationViewSet, ReviewViewSet
 
 router = DefaultRouter()
 router.register("applications", ApplicationViewSet)
+router.register("reviews", ReviewViewSet, basename="review")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

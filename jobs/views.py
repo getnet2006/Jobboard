@@ -7,16 +7,18 @@ from rest_framework import filters, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .filters import JobFilter
-from .models import Application, Job
+from .models import Application, Job, Review
 from .serializers import (
     ApplicationListSerializer,
     ApplicationSerializer,
     ApplicationWithFreelancerSerializer,
     HiredSerializer,
     JobSerializer,
+    ReviewSerializer,
 )
 from accounts.permissions import IsClient, IsFreelancer, IsJobOwner
 from django.utils import timezone
+from django.core.exceptions import PermissionDenied
 
 
 class JobCreateListView(generics.ListCreateAPIView):
@@ -147,3 +149,46 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
         serializer = HiredSerializer(hired_apps, many=True)
         return Response(serializer.data)
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        job = serializer.validated_data["job"]
+        freelancer = serializer.validated_data["freelancer"]
+
+        # Check: is the user the client of this job?
+        if job.client != self.request.user:
+            raise PermissionDenied("You can only review freelancers for your own jobs.")
+
+        # Check: was the freelancer hired for this job?
+        if not Application.objects.filter(
+            job=job, freelancer=freelancer, is_hired=True
+        ).exists():
+            raise ValidationError("You can only review freelancers you have hired.")
+
+        serializer.save(client=self.request.user)
+
+    def perform_list(self, serializer):
+        # Only show reviews for the logged-in user's jobs
+        self.queryset = self.queryset.filter(client=self.request.user)
+        return super().perform_list(serializer)
+    
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+    def reply(self, request, pk=None):
+        review = self.get_object()
+
+        if review.freelancer != request.user:
+            raise PermissionDenied("You can only reply to reviews written about you.")
+
+        reply_text = request.data.get('reply', '').strip()
+        if not reply_text:
+            raise ValidationError({"reply": "Reply cannot be empty."})
+
+        review.reply = reply_text
+        review.save()
+
+        return Response({"message": "Reply added successfully."})

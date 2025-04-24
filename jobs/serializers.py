@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Application, Job
+from .models import Application, Job, Review
 from accounts.models import User
 
 
@@ -99,3 +99,25 @@ class HiredSerializer(serializers.ModelSerializer):
             "created_at",
             "hired_date",
         ]
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    freelancer_name = serializers.CharField(
+        source="freelancer.username", read_only=True
+    )
+    job_title = serializers.CharField(source="job.title", read_only=True)
+
+    class Meta:
+        model = Review
+        fields = [
+            "id",
+            "job",
+            "job_title",
+            "freelancer",
+            "freelancer_name",
+            "rating",
+            "comment",
+            "reply",
+            "created_at",
+        ]
+        read_only_fields = ["client", "created_at", "freelancer", "job", "reply"]
