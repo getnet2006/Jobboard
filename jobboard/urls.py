@@ -17,6 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 from rest_framework.routers import DefaultRouter
 from jobs.views import ApplicationViewSet, ReviewViewSet
 
@@ -26,6 +31,17 @@ router.register("reviews", ReviewViewSet, basename="review")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # Schema generation
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Swagger UI
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    # Optional: ReDoc alternative UI
+    path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    
     path("api/auth/", include("accounts.urls")),
     path("api/jobs/", include("jobs.urls")),
     path("api/", include(router.urls)),

@@ -7,8 +7,7 @@ from .views import (
     JobCreateListView,
     JobDetailView,
     PublicJobListView,
-    AppliedJobsListView,
-    ApplicationViewSet,
+    AppliedJobsListView
 )
 
 urlpatterns = [
