@@ -1,0 +1,606 @@
+{
+	"info": {
+		"_postman_id": "4475be44-a22f-48e2-83f2-8e91c8fd96ed",
+		"name": "JobBoard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42515361"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"rudi\",\r\n    \"password\": \"sme@$$AB34\",\r\n    \"email\": \"rudi@gmail.com\",\r\n    \"role\": \"freelancer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/register/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mita\",\r\n    \"password\": \"sme@$$AB34\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/token/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NTQ4OTg1OCwiaWF0IjoxNzQ1NDAzNDU4LCJqdGkiOiI0ZGIyNTVhNmNmZGI0YzFhYmRlNDMyMzI4M2IzYTAwZSIsInVzZXJfaWQiOjIsInVzZXJuYW1lIjoicnV0YSIsInJvbGUiOiJjbGllbnQifQ.rQryNZHybtF4hm1KgEvPCnSBczzf7kk4angWUwcgn3Y\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/token/refresh/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"token",
+						"refresh",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDgwNjAzLCJpYXQiOjE3NDU0NzcwMDMsImp0aSI6IjBjYzlmY2QxYWRmYTQ4YjFhMzZmOGU0YzQxZTQ0Mzk4IiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.SwFOMCja3gwWM4cG2oHNGUiKPM-MBF31z-6UH8pbyBg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Accountant\",\r\n    \"description\": \"An experianced accountant that have...\",\r\n    \"budget\": 35500,\r\n    \"max_applications\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/jobs",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Job",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDg0Mjk2LCJpYXQiOjE3NDU0ODA2OTYsImp0aSI6ImViOGRkMzI1YTM5YjRjY2Q5MzQwODhiOTg3NDhkZDBkIiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.q90818vD2-mAsBNQVICa4Jao4p9kRnDdOeHALSVp0JM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/jobs?min_budget=500&max_budget=900",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "min_budget",
+							"value": "500"
+						},
+						{
+							"key": "max_budget",
+							"value": "900"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Job by Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NTYzMDA0LCJpYXQiOjE3NDU1NTk0MDQsImp0aSI6ImFkOWViN2MzYzY5YzQ0ZGY5NTU3MzZkYTFhOGE4NzFhIiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.6p65iw_-hwLeF0dZEIZ91DYqVdjkTAPq4Ju8lgdI4Jw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/jobs/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"jobs",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update job",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDAxNDYzLCJpYXQiOjE3NDUzOTc4NjMsImp0aSI6IjljZTYyZjVhNGI5NDRjNDZhMTQ3NmM4MmNjOGY1ZjU1IiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.jc7gQrDVJzdRzxDgAd9wBBL1AJnOMZ2aFTUYFiQWE_c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"is_open\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/jobs/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"jobs",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public list job",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/jobs/public",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"jobs",
+						"public"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Apply Job",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDkzNjgzLCJpYXQiOjE3NDU0OTAwODMsImp0aSI6IjAwZGZiZGJjZDVkMjQ3MGY4YWZhZDZmOTdkZDE4ZjJlIiwidXNlcl9pZCI6NCwidXNlcm5hbWUiOiJtaXRhIiwicm9sZSI6ImZyZWVsYW5jZXIifQ.M5ofXsxkUe6JYqzDTZknWZg7wRD5TnAuWTsiw8qEM-Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"job\": 1,\r\n  \"cover_letter\": \"I'm excited to help with this project because I’ve done similar work before...\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/jobs/apply/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"jobs",
+						"apply",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List my applications",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NTcwMzM1LCJpYXQiOjE3NDU1NjY3MzUsImp0aSI6ImNmMzhhZTg3MjI5YzQ0YjZhN2NhNzcwZTgwMzc5ZTFjIiwidXNlcl9pZCI6NCwidXNlcm5hbWUiOiJtaXRhIiwicm9sZSI6ImZyZWVsYW5jZXIifQ.cSV0Ojvs3NpZb0BEbahxoOCqaeZAb5J0Wv0TAKkmNjg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/jobs/my-applications",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"jobs",
+						"my-applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Applicant list",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDk0NjEwLCJpYXQiOjE3NDU0OTEwMTAsImp0aSI6IjVmOGRhMzhhYjRiMTQyMDdiMzA0ODdmOGZlODQ0MTY3IiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.PA-2C_8h6hI51kcCinDx3dwXqn03RQP98G54jIrQ3Fw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/jobs/1/applicants",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"jobs",
+						"1",
+						"applicants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hire applicant",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDk0NjEwLCJpYXQiOjE3NDU0OTEwMTAsImp0aSI6IjVmOGRhMzhhYjRiMTQyMDdiMzA0ODdmOGZlODQ0MTY3IiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.PA-2C_8h6hI51kcCinDx3dwXqn03RQP98G54jIrQ3Fw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/applications/6/hire/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"applications",
+						"6",
+						"hire",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List hired applicants",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDk0NjEwLCJpYXQiOjE3NDU0OTEwMTAsImp0aSI6IjVmOGRhMzhhYjRiMTQyMDdiMzA0ODdmOGZlODQ0MTY3IiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.PA-2C_8h6hI51kcCinDx3dwXqn03RQP98G54jIrQ3Fw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/applications/hired/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"applications",
+						"hired",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add review",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDk0NjEwLCJpYXQiOjE3NDU0OTEwMTAsImp0aSI6IjVmOGRhMzhhYjRiMTQyMDdiMzA0ODdmOGZlODQ0MTY3IiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.PA-2C_8h6hI51kcCinDx3dwXqn03RQP98G54jIrQ3Fw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"job\": 1,\r\n  \"freelancer\": 4,\r\n  \"rating\": 5,\r\n  \"comment\": \"Excellent work and communication!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/reviews/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"reviews",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reply review",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDk3NjM5LCJpYXQiOjE3NDU0OTQwMzksImp0aSI6IjI5NjI1OTBmYjYwMjQwZWZiOGIwNDEzOGJmNDk5ZTMxIiwidXNlcl9pZCI6NCwidXNlcm5hbWUiOiJtaXRhIiwicm9sZSI6ImZyZWVsYW5jZXIifQ.5Hc1EKuGNx-s3davbDo6ltKMPMFbjr-BI9Ys4HA0knI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"reply\": \"Thank you for the kind words! Glad you liked the work.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/reviews/1/reply/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"reviews",
+						"1",
+						"reply",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List reviews",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NDk4MTE2LCJpYXQiOjE3NDU0OTQ1MTYsImp0aSI6IjExZjI1NzNmNDdkOTQ2ZjI4ZTc5YjlkMDQxY2VlMzFlIiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJydXRhIiwicm9sZSI6ImNsaWVudCJ9.rMOFuQLc-vu4CSwjYNFG33GAbSrNnuV6hD-QqcHYLkg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/reviews",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
