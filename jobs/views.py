@@ -32,6 +32,7 @@ class JobCreateListView(generics.ListCreateAPIView):
     filterset_fields = ["is_open", "budget"]
     search_fields = ["title", "description"]
     ordering_fields = ["created_at", "budget"]
+    ordering = ["-created_at"]
 
     def perform_create(self, serializer):
         serializer.save(client=self.request.user)
@@ -47,17 +48,20 @@ class JobDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PublicJobListView(generics.ListAPIView):
-    queryset = Job.objects.filter(is_open=True, )
+    queryset = Job.objects.filter(
+        is_open=True,
+    )
     serializer_class = JobSerializer
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    filterset_class = JobFilter  
+    filterset_class = JobFilter
     search_fields = ["title", "description"]
     ordering_fields = ["created_at", "budget"]
     permission_classes = [permissions.AllowAny]
+    ordering = ["-created_at"]
 
 
 class AppliedJobsListView(generics.ListAPIView):
@@ -105,7 +109,9 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     @action(
-        detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated, IsClient]
+        detail=True,
+        methods=["post"],
+        permission_classes=[permissions.IsAuthenticated, IsClient],
     )
     def hire(self, request, pk=None):
         application = self.get_object()
@@ -141,7 +147,9 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
         return Response({"message": "Freelancer hired successfully!"})
 
-    @action(detail=False, methods=["get"], permission_classes=[permissions.IsAuthenticated])
+    @action(
+        detail=False, methods=["get"], permission_classes=[permissions.IsAuthenticated]
+    )
     def hired(self, request):
         hired_apps = Application.objects.filter(
             is_hired=True, job__client=request.user
@@ -176,15 +184,17 @@ class ReviewViewSet(viewsets.ModelViewSet):
         # Only show reviews for the logged-in user's jobs
         self.queryset = self.queryset.filter(client=self.request.user)
         return super().perform_list(serializer)
-    
-    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+
+    @action(
+        detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated]
+    )
     def reply(self, request, pk=None):
         review = self.get_object()
 
         if review.freelancer != request.user:
             raise PermissionDenied("You can only reply to reviews written about you.")
 
-        reply_text = request.data.get('reply', '').strip()
+        reply_text = request.data.get("reply", "").strip()
         if not reply_text:
             raise ValidationError({"reply": "Reply cannot be empty."})
 
