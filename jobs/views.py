@@ -67,6 +67,7 @@ class PublicJobListView(generics.ListAPIView):
 class AppliedJobsListView(generics.ListAPIView):
     serializer_class = ApplicationListSerializer
     permission_classes = [permissions.IsAuthenticated, IsFreelancer]
+    ordering = ["-created_at"]
 
     def get_queryset(self):
         return Application.objects.filter(freelancer=self.request.user).select_related(

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "drf_spectacular",
+    "django_extensions",
     # local apps
     "accounts.apps.AccountsConfig",
     "jobs.apps.JobsConfig",
