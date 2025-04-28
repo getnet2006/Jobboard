@@ -7,6 +7,7 @@ dj-database-url==2.3.0
 Django==5.2
 django-extensions==4.1
 django-filter==25.1
+django-redis==5.4.0
 djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
 drf-spectacular==0.28.0
@@ -34,6 +35,7 @@ pytest-cov==6.1.1
 pytest-django==4.11.1
 python-decouple==3.8
 PyYAML==6.0.2
+redis==5.2.1
 referencing==0.36.2
 rpds-py==0.24.0
 sqlparse==0.5.3

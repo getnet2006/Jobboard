@@ -1,4 +1,7 @@
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -16,6 +19,7 @@ from .serializers import (
     JobSerializer,
     ReviewSerializer,
 )
+from .utils import clear_public_jobs_cache
 from accounts.permissions import IsClient, IsFreelancer, IsJobOwner
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied
@@ -36,6 +40,7 @@ class JobCreateListView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(client=self.request.user)
+        clear_public_jobs_cache()
 
     def get_queryset(self):
         return Job.objects.filter(client=self.request.user)
@@ -45,6 +50,11 @@ class JobDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
     permission_classes = [permissions.IsAuthenticated, IsClient, IsJobOwner]
+
+    def perform_update(self, serializer):
+        job = serializer.save()
+        if not job.is_open:  # If job was closed
+            clear_public_jobs_cache()
 
 
 class PublicJobListView(generics.ListAPIView):
@@ -62,6 +72,10 @@ class PublicJobListView(generics.ListAPIView):
     ordering_fields = ["created_at", "budget"]
     permission_classes = [permissions.AllowAny]
     ordering = ["-created_at"]
+
+    @method_decorator(cache_page(60 * 15))  # Cache for 15 minutes
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class AppliedJobsListView(generics.ListAPIView):
