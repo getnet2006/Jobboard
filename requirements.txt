@@ -12,15 +12,16 @@ djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
 drf-spectacular==0.28.0
 executing==2.2.0
+flake8==7.2.0
 gunicorn==23.0.0
 inflection==0.5.1
 iniconfig==2.1.0
-ipython==9.1.0
 ipython_pygments_lexers==1.1.1
 jedi==0.19.2
 jsonschema==4.23.0
 jsonschema-specifications==2025.4.1
 matplotlib-inline==0.1.7
+mccabe==0.7.0
 packaging==25.0
 parso==0.8.4
 pexpect==4.9.0
@@ -28,6 +29,8 @@ pluggy==1.5.0
 prompt_toolkit==3.0.51
 ptyprocess==0.7.0
 pure_eval==0.2.3
+pycodestyle==2.13.0
+pyflakes==3.3.2
 Pygments==2.19.1
 PyJWT==2.9.0
 pytest==8.3.5
@@ -44,4 +47,3 @@ traitlets==5.14.3
 typing_extensions==4.13.2
 uritemplate==4.1.1
 wcwidth==0.2.13
-flake8==7.2.0
