@@ -10,6 +10,8 @@ A RESTful API for a Freelancer Job Board platform built with Django and Django R
 - Freelancers can apply to jobs (with limits and duplication checks)
 - Clients can hire applicants and auto-close jobs based on max applications
 - Reviews system (with reply support)
+- Redis-powered caching
+- Dockerized & CI/CD-ready
 - Swagger/OpenAPI documentation
 - 100% test coverage with `pytest`
 
