@@ -24,7 +24,7 @@ jobs:
     env:
       DEBUG: 0
       SECRET_KEY: testkey
-      DJANGO_SETTINGS_MODULE: yourproject.settings
+      DJANGO_SETTINGS_MODULE: jobboard.settings
       PYTHONUNBUFFERED: 1
 
     steps:
