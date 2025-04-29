@@ -25,6 +25,9 @@ jobs:
       DEBUG: 0
       SECRET_KEY: testkey
       DJANGO_SETTINGS_MODULE: jobboard.settings
+      ALLOWED_HOSTS: "localhost 127.0.0.1 [::1]"
+      DATABASE_URL: sqlite:///db.sqlite3
+      REDIS_URL: redis://127.0.0.1:6379/0
       PYTHONUNBUFFERED: 1
 
     steps:
