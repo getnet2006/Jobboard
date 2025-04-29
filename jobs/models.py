@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 User = settings.AUTH_USER_MODEL
 
+
 class Job(models.Model):
     client = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="jobs"
@@ -17,6 +18,7 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class Application(models.Model):
     job = models.ForeignKey(
@@ -33,6 +35,7 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.freelancer} applied to {self.job}"
+
 
 class Review(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="reviews")

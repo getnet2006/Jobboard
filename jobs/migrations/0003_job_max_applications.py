@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('jobs', '0002_application'),
+        ("jobs", "0002_application"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='job',
-            name='max_applications',
+            model_name="job",
+            name="max_applications",
             field=models.PositiveIntegerField(default=10),
         ),
     ]

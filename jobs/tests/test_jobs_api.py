@@ -279,21 +279,20 @@ class JobTests(APITestCase):
 
     def test_client_can_hire_freelancer(self):
         freelancer = User.objects.create_user(
-            username="freelancer4@example.com",
-            password="Test1234!",
-            role="freelancer"
+            username="freelancer4@example.com", password="Test1234!", role="freelancer"
         )
-        job = Job.objects.create(client=self.client_user, title="Hire Test", description="...", budget=250)
-        application = Application.objects.create(job=job, freelancer=freelancer, cover_letter="Hire me!")
+        job = Job.objects.create(
+            client=self.client_user, title="Hire Test", description="...", budget=250
+        )
+        application = Application.objects.create(
+            job=job, freelancer=freelancer, cover_letter="Hire me!"
+        )
 
         token = str(RefreshToken.for_user(self.client_user).access_token)
         url = reverse("application-hire", args=[application.id])  # Custom action
 
         response = self.client.post(
-            url,
-            {},
-            format="json",
-            HTTP_AUTHORIZATION=f"Bearer {token}"
+            url, {}, format="json", HTTP_AUTHORIZATION=f"Bearer {token}"
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
