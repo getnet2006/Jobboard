@@ -12,6 +12,9 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get update \
   && apt-get install -y gcc libpq-dev
 
+# add upgrade pip
+RUN python -m pip install --upgrade pip
+
 # Install pip requirements
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
